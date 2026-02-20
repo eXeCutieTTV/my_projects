@@ -89,9 +89,28 @@ for (const [key, value] of Object.entries(websites)) {
             </div>
             <div style="flex:auto;">${value.desc}</div>
         </div>`;
-        Object.assign(modal.style,{
+        Object.assign(modal.style, {
             display: "flex",
             color: "var(--text2)"
         });
     });
 }
+
+document.querySelectorAll(".other_entry").addEventListener("click", () => {
+    modalBody.innerHTML = `
+        <h2 style="margin-top:0;">a</h2>
+        <div style="display: flex; gap: 10px;">
+            <div style="flex:.3;">
+                <a href="#" 
+                target="_blank"
+                rel="noopener noreferrer">
+                    <img src="#" style="border-radius:15px;">
+                </a>
+            </div>
+            <div style="flex:auto;">#</div>
+        </div>`;
+    Object.assign(modal.style, {
+        display: "flex",
+        color: "var(--text2)"
+    });
+});
