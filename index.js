@@ -184,3 +184,4 @@ other0.addEventListener("click", (e) => {
         </div>
     `);
 });
+//anki deck/s modal in 'others' section. both the jsons rep, and as ankidb file?
