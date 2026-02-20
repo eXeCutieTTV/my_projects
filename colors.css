@@ -1,0 +1,10 @@
+:root {
+    --background: rgb(22, 21, 21);
+    --background2: rgb(15, 15, 15);
+    --text: rgb(212, 47, 47);
+    --text2: black;
+    --website-entry-gap: 16px;
+    --link:#f00;
+    --link_visited:#f50;
+    --link_hover:#f50;
+}
