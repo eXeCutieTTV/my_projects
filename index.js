@@ -9,6 +9,11 @@ const websites = {
         icon: "website_icons/漫画.svg",
         url: "https://executiettv.github.io/mangalist/",
         desc: "..."
+    },
+    "School Work, Notes & Overview": {
+        icon: "",
+        url: "",
+        desc: ""
     }
 };
 
