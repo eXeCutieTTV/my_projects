@@ -73,3 +73,39 @@ a:hover {
     width: auto;
     margin-top: 5px;
 }
+
+#other_gallery {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: var(--website-entry-gap);
+}
+
+.other_entry {
+    width: 150px;
+    user-select: none;
+}
+
+.other_entry_a {
+    background-color: var(--background2);
+    border-radius: 10px;
+    display: block;
+    height: 150px;
+}
+
+.other_entry_icon {
+    height: 150px;
+    border-radius: 30px;
+}
+
+.other_entry_icon:hover {
+    cursor: pointer;
+    scale: 1.1;
+}
+
+.other_entry_label {
+    text-align: center;
+    background-color: black;
+    width: auto;
+    margin-top: 5px;
+}

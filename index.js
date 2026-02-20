@@ -10,27 +10,22 @@ const websites = {
         url: "https://executiettv.github.io/mangalist/",
         desc: "..."
     }
+};
+
+function escapeHtml(value) {
+    return String(value ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
 }
-const website_gallery = document.getElementById("website_gallery");
-for (const [key, value] of Object.entries(websites)) {
-    const div = document.createElement("div");
-    div.innerHTML = `
-    <a class="website_entry_a">
-        <img src="${value.icon}" class="website_entry_icon">
-        <!--created by ${value.credit || "me"}-->
-    </a>
-    <a href="${value.url}"
-    target="_blank"
-    rel="noopener noreferrer">
-        <div class="website_entry_label">${key}</div>
-    </a>
-    `;
-    div.classList.add("website_entry");
-    website_gallery.appendChild(div);
-    //elements^^
-    //modal vv
+
+window.createModal = function createModal(options = {}) {
     const modal = document.createElement("div");
-    modal.id = "modal";
+    if (options.id) modal.id = options.id;
+    if (options.className) modal.className = options.className;
+
     Object.assign(modal.style, {
         display: "none",
         position: "fixed",
@@ -53,7 +48,8 @@ for (const [key, value] of Object.entries(websites)) {
         borderRadius: "10px",
         maxHeight: "80%",
         overflowY: "auto",
-        position: "relative"
+        position: "relative",
+        color: "var(--text2)",
     });
 
     const modalClose = document.createElement("span");
@@ -63,7 +59,7 @@ for (const [key, value] of Object.entries(websites)) {
         right: "15px",
         top: "10px",
         fontSize: "28px",
-        cursor: "pointer"
+        cursor: "pointer",
     });
 
     const modalBody = document.createElement("div");
@@ -72,45 +68,114 @@ for (const [key, value] of Object.entries(websites)) {
     modal.appendChild(modalContent);
     document.body.appendChild(modal);
 
-    // Modal close events
-    modalClose.addEventListener("click", () => modal.style.display = "none");
-    modal.addEventListener("click", (e) => { if (e.target === modal) modal.style.display = "none"; });
-    // Click opens modal
-    div.querySelector("img").addEventListener("click", () => {
-        modalBody.innerHTML = `
-        <h2 style="margin-top:0;">${key}</h2>
-        <div style="display: flex; gap: 10px;">
+    const close = () => {
+        modal.style.display = "none";
+    };
+
+    const setContent = (content) => {
+        if (typeof content === "string") {
+            modalBody.innerHTML = content;
+            return;
+        }
+        modalBody.replaceChildren(content);
+    };
+
+    const open = (content) => {
+        setContent(content);
+        modal.style.display = "flex";
+    };
+
+    modalClose.addEventListener("click", close);
+    modal.addEventListener("click", (e) => {
+        if (e.target === modal) close();
+    });
+
+    return { modal, modalBody, open, close, setContent };
+};
+
+function buildWebsiteModalHtml(name, value) {
+    return `
+        <h2 style="margin-top:0;">${escapeHtml(name)}</h2>
+        <div style="display:flex; gap:10px;">
             <div style="flex:.3;">
-                <a href="${value.url}" 
-                target="_blank"
-                rel="noopener noreferrer">
-                    <img src="${value.icon}" style="border-radius:15px;">
+                <a href="${escapeHtml(value.url)}" target="_blank" rel="noopener noreferrer">
+                    <img src="${escapeHtml(value.icon)}" style="border-radius:15px;">
                 </a>
             </div>
-            <div style="flex:auto;">${value.desc}</div>
+            <div style="flex:auto;">${escapeHtml(value.desc || "")}</div>
         </div>`;
-        Object.assign(modal.style, {
-            display: "flex",
-            color: "var(--text2)"
-        });
+}
+
+const projectModal = window.createModal({ id: "project_modal" });
+window.showProjectModal = projectModal.open;
+window.closeProjectModal = projectModal.close;
+
+const websiteGallery = document.getElementById("website_gallery");
+for (const [key, value] of Object.entries(websites)) {
+    const div = document.createElement("div");
+    div.innerHTML = `
+    <a class="website_entry_a">
+        <img src="${escapeHtml(value.icon)}" class="website_entry_icon">
+        <!--created by ${escapeHtml(value.credit || "me")}-->
+    </a>
+    <a href="${escapeHtml(value.url)}"
+    target="_blank"
+    rel="noopener noreferrer">
+        <div class="website_entry_label">${escapeHtml(key)}</div>
+    </a>
+    `;
+    div.classList.add("website_entry");
+    websiteGallery.appendChild(div);
+
+    div.querySelector("img").addEventListener("click", () => {
+        projectModal.open(buildWebsiteModalHtml(key, value));
     });
 }
 
-document.querySelectorAll(".other_entry").addEventListener("click", () => {
-    modalBody.innerHTML = `
-        <h2 style="margin-top:0;">a</h2>
-        <div style="display: flex; gap: 10px;">
+// "other" entries are intentionally fully custom.
+// Use document.querySelectorAll(".other_entry")[index] and open any structure you want.
+//
+// Example:
+// const other0 = document.querySelectorAll(".other_entry")[0];
+// other0.addEventListener("click", (e) => {
+//     if (!e.target.closest(".website_entry_a, .website_entry_icon")) return;
+//     e.preventDefault();
+//     window.showProjectModal(`
+//         <h2 style="margin-top:0;">Unique Modal 0</h2>
+//         <p>Completely custom HTML content.</p>
+//         <button onclick="window.closeProjectModal()">Close from content</button>
+//     `);
+// });
+
+window.bindOtherModal = function bindOtherModal(index, renderContent) {
+    const entry = document.querySelectorAll(".other_entry")[index];
+    if (!entry || typeof renderContent !== "function") return null;
+
+    const handler = (e) => {
+        if (!e.target.closest(".other_entry_a, .other_entry_icon")) return;
+        e.preventDefault();
+        projectModal.open(renderContent({ entry, event: e, escapeHtml }));
+    };
+
+    entry.addEventListener("click", handler);
+    return () => entry.removeEventListener("click", handler);
+};
+
+const other0 = document.querySelectorAll(".other_entry")[0];
+other0.addEventListener("click", (e) => {
+    if (!e.target.closest(".other_entry_a, .other_entry_icon")) return;
+    e.preventDefault();
+    window.showProjectModal(`
+        <h2 style="margin-top:0;">${other0.dataset.modalTitle}</h2>
+        
+        
+        <div style="display:flex; gap:10px;">
             <div style="flex:.3;">
-                <a href="#" 
-                target="_blank"
-                rel="noopener noreferrer">
-                    <img src="#" style="border-radius:15px;">
+                <a href="${other0.dataset.modalUrl}" target="_blank" rel="noopener noreferrer">
+                    <img src="${other0.dataset.modalImg}" style="border-radius:15px;">
                 </a>
             </div>
-            <div style="flex:auto;">#</div>
-        </div>`;
-    Object.assign(modal.style, {
-        display: "flex",
-        color: "var(--text2)"
-    });
+            <div style="flex:auto;">${other0.dataset.modalDesc}</div>
+        </div>
+    `);
 });
