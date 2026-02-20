@@ -8,7 +8,7 @@ const websites = {
     "Mangalist": {
         icon: "website_icons/漫画.svg",
         url: "https://executiettv.github.io/mangalist/",
-        desc: "..."
+        desc: "..."//make a "display pat" btn - just calling localstorage stored pat
     },
     "School Work, Notes & Overview": {
         icon: "",
