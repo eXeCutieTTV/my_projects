@@ -11,9 +11,14 @@ const websites = {
         desc: "..."//make a "display pat" btn - just calling localstorage stored pat
     },
     "School Work, Notes & Overview": {
-        icon: "",
-        url: "",
+        icon: "website_icons/Lorem ipsum dolor sit amet_page-0001.jpg",
+        url: "https://executiettv.github.io/my_projects/",
         desc: ""
+    },
+    "Anki decks(JSON)": {
+        icon: "website_icons/anki.png",
+        url: "https://executiettv.github.io/my_projects/",
+        desc: "..."
     }
 };
 
@@ -103,8 +108,8 @@ function buildWebsiteModalHtml(name, value) {
         <h2 style="margin-top:0;">${escapeHtml(name)}</h2>
         <div style="display:flex; gap:10px;">
             <div style="flex:.3;">
-                <a href="${escapeHtml(value.url)}" target="_blank" rel="noopener noreferrer">
-                    <img src="${escapeHtml(value.icon)}" style="border-radius:15px;">
+                <a href="${escapeHtml(value.url)}" target="_blank" rel="noopener noreferrer" style="justify-self:center;">
+                    <img src="${escapeHtml(value.icon)}" style="border-radius:15px; height: 256px;">
                 </a>
             </div>
             <div style="flex:auto;">${escapeHtml(value.desc || "")}</div>
@@ -119,7 +124,7 @@ const websiteGallery = document.getElementById("website_gallery");
 for (const [key, value] of Object.entries(websites)) {
     const div = document.createElement("div");
     div.innerHTML = `
-    <a class="website_entry_a">
+    <a class="website_entry_a" style="justify-self:center;">
         <img src="${escapeHtml(value.icon)}" class="website_entry_icon">
         <!--created by ${escapeHtml(value.credit || "me")}-->
     </a>
@@ -166,22 +171,34 @@ window.bindOtherModal = function bindOtherModal(index, renderContent) {
     return () => entry.removeEventListener("click", handler);
 };
 
-const other0 = document.querySelectorAll(".other_entry")[0];
-other0.addEventListener("click", (e) => {
+const others = document.querySelectorAll(".other_entry");
+others[0].addEventListener("click", (e) => {
     if (!e.target.closest(".other_entry_a, .other_entry_icon")) return;
     e.preventDefault();
     window.showProjectModal(`
-        <h2 style="margin-top:0;">${other0.dataset.modalTitle}</h2>
-        
-        
+        <h2 style="margin-top:0;">${others[0].dataset.modalTitle}</h2>
         <div style="display:flex; gap:10px;">
             <div style="flex:.3;">
-                <a href="${other0.dataset.modalUrl}" target="_blank" rel="noopener noreferrer">
-                    <img src="${other0.dataset.modalImg}" style="border-radius:15px;">
+                <a href="${others[0].dataset.modalUrl}" target="_blank" rel="noopener noreferrer" style="justify-self:center;">
+                    <img src="${others[0].dataset.modalImg}" style="border-radius:15px; height: 256px;">
                 </a>
             </div>
-            <div style="flex:auto;">${other0.dataset.modalDesc}</div>
+            <div style="flex:auto;">${others[0].dataset.modalDesc}</div>
         </div>
     `);
 });
-//anki deck/s modal in 'others' section. both the jsons rep, and as ankidb file?
+others[1].addEventListener("click", (e) => {
+    if (!e.target.closest(".other_entry_a, .other_entry_icon")) return;
+    e.preventDefault();
+    window.showProjectModal(`
+        <h2 style="margin-top:0;">${others[1].dataset.modalTitle}</h2>
+        <div style="display:flex; gap:10px;">
+            <div style="flex:.3;">
+                <a href="${others[1].dataset.modalUrl}" target="_blank" rel="noopener noreferrer" style="justify-self:center;">
+                    <img src="${others[1].dataset.modalImg}" style="border-radius:15px; height: 256px;">
+                </a>
+            </div>
+            <div style="flex:auto;">${others[1].dataset.modalDesc}</div>
+        </div>
+    `);
+});
