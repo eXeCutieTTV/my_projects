@@ -17,7 +17,7 @@ const websites = {
     },
     "Anki decks(JSON)": {
         icon: "website_icons/anki.png",
-        url: "https://executiettv.github.io/my_projects/",
+        url: "https://executiettv.github.io/anki_jsons/",
         desc: "..."
     }
 };
