@@ -13,7 +13,7 @@ const websites = {
     "School Work, Notes & Overview": {
         icon: "website_icons/Lorem ipsum dolor sit amet_page-0001.jpg",
         url: "https://executiettv.github.io/my_projects/",
-        desc: ""
+        desc: "..."
     },
     "Anki decks(JSON)": {
         icon: "website_icons/anki.png",
