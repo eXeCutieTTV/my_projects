@@ -108,7 +108,7 @@ function buildWebsiteModalHtml(name, value) {
         <h2 style="margin-top:0;">${escapeHtml(name)}</h2>
         <div style="display:flex; gap:10px;">
             <div style="flex:.3;">
-                <a href="${escapeHtml(value.url)}" target="_blank" rel="noopener noreferrer" style="justify-self:center;">
+                <a href="${escapeHtml(value.url)}" target="_blank" rel="noopener noreferrer" style="text-align:center;">
                     <img src="${escapeHtml(value.icon)}" style="border-radius:15px; height: 256px;">
                 </a>
             </div>
@@ -124,7 +124,7 @@ const websiteGallery = document.getElementById("website_gallery");
 for (const [key, value] of Object.entries(websites)) {
     const div = document.createElement("div");
     div.innerHTML = `
-    <a class="website_entry_a" style="justify-self:center;">
+    <a class="website_entry_a" style="text-align:center;">
         <img src="${escapeHtml(value.icon)}" class="website_entry_icon">
         <!--created by ${escapeHtml(value.credit || "me")}-->
     </a>
@@ -179,7 +179,7 @@ others[0].addEventListener("click", (e) => {
         <h2 style="margin-top:0;">${others[0].dataset.modalTitle}</h2>
         <div style="display:flex; gap:10px;">
             <div style="flex:.3;">
-                <a href="${others[0].dataset.modalUrl}" target="_blank" rel="noopener noreferrer" style="justify-self:center;">
+                <a href="${others[0].dataset.modalUrl}" target="_blank" rel="noopener noreferrer" style="text-align:center;">
                     <img src="${others[0].dataset.modalImg}" style="border-radius:15px; height: 256px;">
                 </a>
             </div>
@@ -194,7 +194,7 @@ others[1].addEventListener("click", (e) => {
         <h2 style="margin-top:0;">${others[1].dataset.modalTitle}</h2>
         <div style="display:flex; gap:10px;">
             <div style="flex:.3;">
-                <a href="${others[1].dataset.modalUrl}" target="_blank" rel="noopener noreferrer" style="justify-self:center;">
+                <a href="${others[1].dataset.modalUrl}" target="_blank" rel="noopener noreferrer" style="text-align:center;">
                     <img src="${others[1].dataset.modalImg}" style="border-radius:15px; height: 256px;">
                 </a>
             </div>
